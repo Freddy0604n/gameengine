@@ -1,10 +1,10 @@
-mod objects;
+use objects::ObjectVarient;
+
+pub mod objects;
+mod world;
 
 fn main() {
     let mut world = objects::World::new();
-    let mut player = objects::Object::new(0, objects::ObjectVarient::Empty, &mut world);
-    let camera = objects::Object::new(player.id, objects::ObjectVarient::Camera, &mut world);
-    player.add_child(&camera);
-
-    println!("{:?}\n{:?}", player, camera);
+    world.add_object("Player", 0, ObjectVarient::Empty);
+    println!("{:?}", world);
 }
