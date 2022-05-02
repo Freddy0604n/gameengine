@@ -1,4 +1,4 @@
-enum ObjectVarient {
+pub enum ObjectVarient {
     Camera,
     RigidBody,
     Mesh
