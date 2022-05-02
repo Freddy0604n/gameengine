@@ -1,4 +1,4 @@
-pub struct World {
+pub struct World {  // the parent of all objects
     pub id: u32,
     pub children: Vec<u32>,
     pub id_tracker: u32
@@ -11,6 +11,11 @@ impl World {
             children: Vec::new(),
             id_tracker: 0
         }
+    }
+
+    pub fn clear(&mut self) {
+        self.id_tracker = 0;
+        self.children = Vec::new();
     }
 }
 #[derive(Debug)]
@@ -48,5 +53,13 @@ impl Object {
             panic!("The child parent id does not match the id of the parent you want to assign to");
         }
         self.children_ids.push(child.id);
+    }
+
+    pub fn move_with(&mut self, change: [f32; 3]) {    // move the object to new place relative of current position
+        let mut iter = 0;
+        while iter < 3 {
+            self.position[iter] += change[iter];
+            iter += 1;
+        }
     }
 }
