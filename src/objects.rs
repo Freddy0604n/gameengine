@@ -1,25 +1,11 @@
-pub mod RigidBody;
-
-pub enum Objects {
+enum ObjectVarient {
     Camera,
-    Mesh,
-    Rigidbody
+    RigidBody,
+    Mesh
 }
-
-pub struct Camera {
-    position: [f64; 3],
-    rotation: [f64; 3], // rotation is in degrees from the axis
-    lens_size: [f64; 2],
-    lens_distance: f64
-}
-
-impl Camera {
-    pub fn new() -> Camera {
-        Camera {
-            position: [0.0; 3],
-            rotation: [0.0; 3],
-            lens_size: [2.5, 1.5],
-            lens_distance: 1.0
-        }
-    }
+pub struct Object {
+    pub position: [f32; 3], // relative from parent
+    pub rotation: [f32; 3], // relative from default (axis) in degrees
+    pub id: u32, // fro keeping track of the child-parent structure
+    pub varient: ObjectVarient
 }
