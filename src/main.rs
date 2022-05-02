@@ -1,6 +1,7 @@
-mod physics;
+mod objects;
 
 fn main() {
-    let player = physics::rigid_body::RigidBody::new([0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]);
+    let mut player = objects::RigidBody::RigidBody::new([0.0; 3], [0.0; 3], [0.0; 3], [0.0; 3]);
+    player.children = vec![objects::objects::Mesh];
     println!("{:#?}", player);
 }
