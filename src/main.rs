@@ -1,7 +1,7 @@
 use objects::ObjectVarient;
 
 pub mod objects;
-mod world;
+mod stage;
 
 fn main() {
     let mut world = objects::World::new();

@@ -13,7 +13,7 @@ fn load(path: &str) -> Vec<Object> {
         children_ids: Vec::new(),
     }]
 }
-/*  The .wrld file:
+/*  The .stg file:
 List of all objects in a world excluding the world object itself.
 Different objects are seperated by a \n, different pieces of data are seperated by NUL.
 */
