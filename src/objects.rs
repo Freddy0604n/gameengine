@@ -42,6 +42,33 @@ impl World {
         self.id_tracker += 1;
         self.content.push(new);
     }
+
+    pub fn print_all(&self) {
+       for i in self.content.iter() {
+            if i.id == 0 {
+                println!("{}", i.name);
+                let under = self.get_children(i);
+                for j in under {
+                    if j.children_ids == Vec::new() {
+                        println!("|__{}", j.name);
+                    }
+                }
+            }
+       }
+    }
+
+    fn get_children(&self, object: &Object) -> Vec<&Object> {
+        let mut returnval = Vec::new();
+        for ids in object.children_ids.iter() {
+            for option in self.content.iter() {
+                if option.id == *ids {
+                    returnval.push(option);
+                    break;
+                }
+            }
+        }
+        returnval
+    }
 }
 #[derive(Debug)]
 pub enum ObjectVarient {
