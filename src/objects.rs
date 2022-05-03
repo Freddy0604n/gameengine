@@ -44,6 +44,7 @@ impl World {
     }
 
     pub fn print_all(&self) {
+        // This is a function that does not function 
        for i in self.content.iter() {
             if i.id == 0 {
                 println!("{}", i.name);
@@ -58,6 +59,7 @@ impl World {
     }
 
     fn get_children(&self, object: &Object) -> Vec<&Object> {
+        // This function does not yet function the way I want it to
         let mut returnval = Vec::new();
         for ids in object.children_ids.iter() {
             for option in self.content.iter() {
