@@ -10,6 +10,7 @@ pub enum Varient {
     Mesh,
     Empty,
 }
+
 #[derive(Debug)]
 pub struct Object {
     pub name: String,
@@ -42,6 +43,8 @@ impl Object {
                 matches = true;
             }
         }
+
+        // WARNING: This code does not work properly, please do not use it
         if matches {
             let tries = 0;
             loop {
@@ -50,7 +53,7 @@ impl Object {
                         == String::from(format!("{}", tries))
                     {
                         tries += 1;
-                        break;
+                        continue;
                     }
                 }
 
