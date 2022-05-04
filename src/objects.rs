@@ -1,81 +1,12 @@
 #[derive(Debug)]
-pub struct World {
-    // the parent of all objects
-    pub id: u32,
-    pub children: Vec<u32>,
-    pub id_tracker: u32,
-    pub name: String,
-    pub content: Vec<Object>,
-}
-
-impl World {
-    pub fn new() -> World {
-        World {
-            id: 0,
-            children: Vec::new(),
-            id_tracker: 1,
-            name: String::from("main"),
-            content: Vec::new(),
-        }
-    }
-
-    pub fn clear(&mut self) {
-        self.id_tracker = 0;
-        self.children = Vec::new();
-    }
-
-    pub fn add_object(&mut self, name: &str, parent_id: u32, varient: ObjectVarient) {
-        let new = Object::new(name, parent_id, varient, self.id_tracker);
-        let mut iter = 0;
-        if parent_id != 0 {
-            loop {
-                // change the children_ids vector in the parent to include the new object
-                if self.content[iter].id == parent_id {
-                    self.content[iter].children_ids.push(self.id_tracker);
-                    break;
-                }
-                iter += 1;
-            }
-        } else {
-            self.children.push(self.id_tracker);
-        }
-        self.id_tracker += 1;
-        self.content.push(new);
-    }
-
-    pub fn print_all(&self) {
-        // This is a function that does not function 
-       for i in self.content.iter() {
-            if i.id == 0 {
-                println!("{}", i.name);
-                let under = self.get_children(i);
-                for j in under {
-                    if j.children_ids == Vec::new() {
-                        println!("|__{}", j.name);
-                    }
-                }
-            }
-       }
-    }
-
-    fn get_children(&self, object: &Object) -> Vec<&Object> {
-        // This function does not yet function the way I want it to
-        let mut returnval = Vec::new();
-        for ids in object.children_ids.iter() {
-            for option in self.content.iter() {
-                if option.id == *ids {
-                    returnval.push(option);
-                    break;
-                }
-            }
-        }
-        returnval
-    }
-}
-#[derive(Debug)]
-pub enum ObjectVarient {
-    Camera,
-    RigidBody,
+pub enum Varient {
+    Camera {
+        lens_size: [f32; 2],
+    },
+    RigidBody {
+        direction: [f32; 3], // The vector of the forces on the rigidbody
+        size: [f32; 3],      // A rigidbody is always a cube
+    },
     Mesh,
     Empty,
 }
@@ -84,31 +15,55 @@ pub struct Object {
     pub name: String,
     pub position: [f32; 3], // relative from parent
     pub rotation: [f32; 3], // relative from default (axis) in degrees
-    pub id: u32,            // for keeping track of the child-parent structure
-    pub varient: ObjectVarient,
-    pub parent_id: u32,
-    pub children_ids: Vec<u32>,
+    pub varient: Varient,
+    pub children: Vec<Object>,
 }
 
 impl Object {
-    fn new(name: &str, parent_id: u32, varient: ObjectVarient, id: u32) -> Object {
+    pub fn new(name: &str, varient: Varient) -> Object {
         Object {
             name: String::from(name),
             position: [0.0; 3],
             rotation: [0.0; 3],
-            id,
             varient,
-            parent_id,
-            children_ids: Vec::new(),
+            children: Vec::new(),
         }
     }
 
-    pub fn add_child(&mut self, child: &Object) {
-        // adds the id of the given child to the parent vector after checking parent id
-        if child.parent_id != self.id {
-            panic!("The child parent id does not match the id of the parent you want to assign to");
+    pub fn add_object(&mut self, mutable_object: Object) {
+        let mut matching_names: Vec<usize> = Vec::new();
+        let mut iter = 0;
+        let mut matches = false;
+
+        // Check whether there is no matching name under the same parent object
+        while iter < self.children.len() {
+            if self.children[iter].name[..mutable_object.name.len()] == mutable_object.name {
+                matching_names.push(iter);
+                matches = true;
+            }
         }
-        self.children_ids.push(child.id);
+        if matches {
+            let tries = 0;
+            loop {
+                for i in matching_names {
+                    if self.children[i].name[mutable_object.name.len() - 1..]
+                        == String::from(format!("{}", tries))
+                    {
+                        tries += 1;
+                        break;
+                    }
+                }
+
+                mutable_object.name = mutable_object.name + format!("{}", tries);
+                break;
+            }
+        }
+        self.children.push(mutable_object);
+    }
+
+    pub fn print_all(&self) {
+        //TODO: make this actually work
+        println!("{:#?}", self);
     }
 
     pub fn move_with(&mut self, change: [f32; 3]) {
