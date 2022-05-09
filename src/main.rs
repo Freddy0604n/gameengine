@@ -8,6 +8,7 @@ use objects::*;
 pub mod objects;
 mod stage;
 mod network;
+mod textures;
 
 fn main() {
     let mut world = Object::new("World", Varient::Empty);
