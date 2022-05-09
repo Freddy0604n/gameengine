@@ -6,12 +6,18 @@ pub fn encode(image_data: Vec<[u8; 4]>, image_dimensions: [u8; 2]) -> Vec<u8> { 
     for i in b"qoif" {
         encoded_vec.push(*i);
     }
+
     for i in image_data {
         let index = index_position(i);
         if indecis[index] == i {
-
+            encoded_vec.push(index as u8);
+        } else {
+            indecis[index] = i;
+            encoded_vec.push(0xff); // rgba 8bit tag
+            for j in i {
+                encoded_vec.push(j);
+            }
         }
-        indecis[index] = i;
     }
 
     // closing bytes
