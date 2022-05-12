@@ -55,7 +55,7 @@ fn convert_single(object: Object) -> Vec<u8> {
         let add_data: Vec<u8> = Vec::new();
         match typevar {
             10 => {
-                for i in object.varient.Camera.lens_size {
+                for i in object.varient {
                     for j in i.to_be_bytes() {
                         returnval.push(j);
                     }
