@@ -1,5 +1,5 @@
 # gameengine
 
-This is a project where I will build a game engine completely in rust and try to make a game with it.
-
-It hasn't been set up very handy (as a binary), but I will release a library version of the game engine later.
+This was a way too ambitious project to try to make my own game engine in rust and make a multiplayer game in it.
+I stopped this project to first learn the fundamentals of game development and rust. It is now open to see and 
+laugh at.
